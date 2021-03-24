@@ -1,5 +1,5 @@
 import copy
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
 import numpy as np
 import torch
@@ -7,10 +7,14 @@ import torch
 from .utils.utils_profiling import *  # load before other local modules
 
 
-class Fiber(object):
+__all__ = ["Fiber", "fiber2head", "fiber2tensor", "get_fiber_dict", "get_fiber_tensor"]
+
+
+class Fiber:
     """A Handy Data Structure for Fibers"""
-    def __init__(self, num_degrees: int=None, num_channels: int=None,
-                 structure: List[Tuple[int,int]]=None, dictionary=None):
+
+    def __init__(self, num_degrees: int = None, num_channels: int = None,
+                 structure: List[Tuple[int, int]] = None, dictionary=None):
         """
         define fiber structure; use one num_degrees & num_channels OR structure
         OR dictionary
@@ -23,7 +27,8 @@ class Fiber(object):
         if structure:
             self.structure = structure
         elif dictionary:
-            self.structure = [(dictionary[o], o) for o in sorted(dictionary.keys())]
+            self.structure = [(dictionary[o], o)
+                              for o in sorted(dictionary.keys())]
         else:
             self.structure = [(num_channels, i) for i in range(num_degrees)]
 
@@ -41,7 +46,7 @@ class Fiber(object):
             self.feature_indices[d] = (idx, idx + length)
             idx += length
 
-    def copy_me(self, multiplicity: int=None):
+    def copy_me(self, multiplicity: int = None):
         s = copy.deepcopy(self.structure)
         if multiplicity is not None:
             # overwrite multiplicities
@@ -107,9 +112,9 @@ class Fiber(object):
         return f"{self.structure}"
 
 
-
 def get_fiber_dict(F, struc, mask=None, return_struc=False):
-    if mask is None: mask = struc
+    if mask is None:
+        mask = struc
     index = 0
     fiber_dict = {}
     first_dims = F.shape[:-1]
@@ -118,7 +123,8 @@ def get_fiber_dict(F, struc, mask=None, return_struc=False):
         length = m * (2*o + 1)
         if o in mask.degrees:
             masked_dict[o] = m
-            fiber_dict[o] = F[...,index:index + length].view(list(first_dims) + [m, 2*o + 1])
+            fiber_dict[o] = F[..., index:index +
+                              length].view(list(first_dims) + [m, 2*o + 1])
         index += length
     assert F.shape[-1] == index
     if return_struc:
@@ -141,20 +147,23 @@ def get_fiber_tensor(F, struc):
 
 def fiber2tensor(F, structure, squeeze=False):
     if squeeze:
-        fibers = [F[f'{i}'].view(*F[f'{i}'].shape[:-2], -1) for i in structure.degrees]
+        fibers = [F[f'{i}'].view(*F[f'{i}'].shape[:-2], -1)
+                  for i in structure.degrees]
         fibers = torch.cat(fibers, -1)
     else:
-        fibers = [F[f'{i}'].view(*F[f'{i}'].shape[:-2], -1, 1) for i in structure.degrees]
+        fibers = [F[f'{i}'].view(*F[f'{i}'].shape[:-2], -1, 1)
+                  for i in structure.degrees]
         fibers = torch.cat(fibers, -2)
     return fibers
 
 
 def fiber2head(F, h, structure, squeeze=False):
     if squeeze:
-        fibers = [F[f'{i}'].view(*F[f'{i}'].shape[:-2], h, -1) for i in structure.degrees]
+        fibers = [F[f'{i}'].view(*F[f'{i}'].shape[:-2], h, -1)
+                  for i in structure.degrees]
         fibers = torch.cat(fibers, -1)
     else:
-        fibers = [F[f'{i}'].view(*F[f'{i}'].shape[:-2], h, -1, 1) for i in structure.degrees]
+        fibers = [F[f'{i}'].view(*F[f'{i}'].shape[:-2], h, -1, 1)
+                  for i in structure.degrees]
         fibers = torch.cat(fibers, -2)
     return fibers
-

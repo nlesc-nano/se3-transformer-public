@@ -5,7 +5,6 @@ Some functions related to SO3 and his usual representations
 Using ZYZ Euler angles parametrisation
 '''
 import torch
-import math
 import numpy as np
 
 
@@ -150,8 +149,10 @@ def xyz_vector_basis_to_spherical_basis():
     see assert for usage
     """
     with torch_default_dtype(torch.float64):
-        A = torch.tensor([[0, 1, 0], [0, 0, 1], [1, 0, 0]], dtype=torch.float64)
-        assert all(torch.allclose(irr_repr(1, a, b, c) @ A, A @ rot(a, b, c)) for a, b, c in torch.rand(10, 3))
+        A = torch.tensor([[0, 1, 0], [0, 0, 1], [1, 0, 0]],
+                         dtype=torch.float64)
+        assert all(torch.allclose(irr_repr(1, a, b, c) @ A, A @ rot(a, b, c))
+                   for a, b, c in torch.rand(10, 3))
     return A.type(torch.get_default_dtype())
 
 
@@ -174,14 +175,16 @@ def tensor3x3_repr_basis_to_spherical_basis():
         to1 = torch.tensor([
             [1, 0, 0, 0, 1, 0, 0, 0, 1],
         ], dtype=torch.get_default_dtype())
-        assert all(torch.allclose(irr_repr(0, a, b, c) @ to1, to1 @ tensor3x3_repr(a, b, c)) for a, b, c in torch.rand(10, 3))
+        assert all(torch.allclose(irr_repr(0, a, b, c) @ to1, to1 @
+                                  tensor3x3_repr(a, b, c)) for a, b, c in torch.rand(10, 3))
 
         to3 = torch.tensor([
             [0, 0, -1, 0, 0, 0, 1, 0, 0],
             [0, 1, 0, -1, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 1, 0, -1, 0],
         ], dtype=torch.get_default_dtype())
-        assert all(torch.allclose(irr_repr(1, a, b, c) @ to3, to3 @ tensor3x3_repr(a, b, c)) for a, b, c in torch.rand(10, 3))
+        assert all(torch.allclose(irr_repr(1, a, b, c) @ to3, to3 @
+                                  tensor3x3_repr(a, b, c)) for a, b, c in torch.rand(10, 3))
 
         to5 = torch.tensor([
             [0, 1, 0, 1, 0, 0, 0, 0, 0],
@@ -190,7 +193,8 @@ def tensor3x3_repr_basis_to_spherical_basis():
             [0, 0, 1, 0, 0, 0, 1, 0, 0],
             [1, 0, 0, 0, -1, 0, 0, 0, 0]
         ], dtype=torch.get_default_dtype())
-        assert all(torch.allclose(irr_repr(2, a, b, c) @ to5, to5 @ tensor3x3_repr(a, b, c)) for a, b, c in torch.rand(10, 3))
+        assert all(torch.allclose(irr_repr(2, a, b, c) @ to5, to5 @
+                                  tensor3x3_repr(a, b, c)) for a, b, c in torch.rand(10, 3))
 
     return to1.type(torch.get_default_dtype()), to3.type(torch.get_default_dtype()), to5.type(torch.get_default_dtype())
 
