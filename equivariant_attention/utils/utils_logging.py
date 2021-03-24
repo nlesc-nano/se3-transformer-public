@@ -1,13 +1,13 @@
+import datetime
 import os
+import subprocess
 import sys
 import time
-import datetime
-import subprocess
+
 import numpy as np
 import torch
 
-from utils.utils_data import to_np
-
+from .utils_data import to_np
 
 _global_log = {}
 

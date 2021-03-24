@@ -1,26 +1,25 @@
-from utils.utils_profiling import * # load before other local modules
-
 import argparse
 import os
 import sys
 import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
 
 import dgl
-import math
 import numpy as np
 import torch
 import wandb
-
-from torch import nn, optim
-from torch.nn import functional as F
+from equivariant_attention.utils.utils_profiling import *
+from experiments.qm9 import models  # as models
+from torch import optim
 from torch.utils.data import DataLoader
+
 from QM9 import QM9Dataset
 
-from experiments.qm9 import models #as models
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
 
 def to_np(x):
     return x.cpu().detach().numpy()
+
 
 def train_epoch(epoch, model, loss_fnc, dataloader, optimizer, scheduler, FLAGS):
     model.train()

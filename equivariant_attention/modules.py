@@ -1,24 +1,21 @@
-from utils.utils_profiling import *  # load before other local modules
+from contextlib import nullcontext
+from typing import Dict
 
+import dgl
+import dgl.function as fn
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
-from contextlib import nullcontext
-
-from typing import Dict
-
-from equivariant_attention.from_se3cnn import utils_steerable
-from equivariant_attention.fibers import Fiber, fiber2head
-from utils.utils_logging import log_gradient_norm
-
-import dgl
-import dgl.function as fn
-from dgl.nn.pytorch.softmax import edge_softmax
 from dgl.nn.pytorch.glob import AvgPooling, MaxPooling
-
+from dgl.nn.pytorch.softmax import edge_softmax
 from packaging import version
+
+from equivariant_attention.fibers import Fiber, fiber2head
+from equivariant_attention.from_se3cnn import utils_steerable
+
+from .utils.utils_logging import log_gradient_norm
+from .utils.utils_profiling import *  # load before other local modules
 
 
 @profile

@@ -1,28 +1,22 @@
-from utils.utils_profiling import *  # load before other local modules
-
 import argparse
 import os
 import sys
 import warnings
 
-warnings.simplefilter(action='ignore', category=FutureWarning)
-
 import dgl
 import numpy as np
 import torch
-import wandb
-import time
-import datetime
-
-from torch import optim
 import torch.nn as nn
-from torch.utils.data import DataLoader
-from experiments.nbody.nbody_dataloader import RIDataset
-from utils import utils_logging
-
+import wandb
+from equivariant_attention.utils import utils_logging
+from equivariant_attention.utils.utils_profiling import *  # load before other local modules
 from experiments.nbody import nbody_models as models
-from equivariant_attention.from_se3cnn.SO3 import rot
+from experiments.nbody.nbody_dataloader import RIDataset
 from experiments.nbody.nbody_flags import get_flags
+from torch import optim
+from torch.utils.data import DataLoader
+
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 
 def to_np(x):
@@ -234,6 +228,7 @@ if __name__ == '__main__':
     try:
         main(FLAGS, UNPARSED_ARGV)
     except Exception:
-        import pdb, traceback
+        import pdb
+        import traceback
         traceback.print_exc()
         pdb.post_mortem()

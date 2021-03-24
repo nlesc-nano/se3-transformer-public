@@ -1,12 +1,10 @@
 import dgl
 import numpy as np
 import torch
-
+from equivariant_attention.utils.utils_data import update_relative_positions
+from experiments.toy_optimisation.opt_potential import update_potential_values
 from torch import FloatTensor
 from torch.utils.data import Dataset
-
-from experiments.toy_optimisation.opt_potential import update_potential_values
-from utils.utils_data import update_relative_positions
 
 DTYPE = np.float32
 DTYPE_TORCH = torch.float32

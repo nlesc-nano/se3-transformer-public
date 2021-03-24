@@ -5,12 +5,14 @@ import dgl
 import numpy as np
 import torch
 from dgl import function as fn
-from torch import nn
-
 from equivariant_attention.fibers import Fiber
-from equivariant_attention.modules import get_basis_and_r, GSE3Res, GNormBias, get_r
-from experiments.toy_optimisation.opt_potential import potential_gradient, update_potential_values
-from utils.utils_data import copy_dgl_graph, update_relative_positions
+from equivariant_attention.modules import (GNormBias, GSE3Res, get_basis_and_r,
+                                           get_r)
+from equivariant_attention.utils.utils_data import (copy_dgl_graph,
+                                                    update_relative_positions)
+from experiments.toy_optimisation.opt_potential import (
+    potential_gradient, update_potential_values)
+from torch import nn
 
 
 class SE3TransformerIterative(nn.Module):

@@ -1,28 +1,25 @@
-from utils.utils_profiling import *  # Load before other local modules
-
 import os
+import pickle
 import sys
 import warnings
 
-warnings.simplefilter(action='ignore', category=FutureWarning)
-
-import pickle
 import dgl
 import numpy as np
 import torch
 import wandb
-
+from equivariant_attention.utils import utils_logging
+from equivariant_attention.utils.utils_data import PickleGraph, to_np
+from equivariant_attention.utils.utils_profiling import *
+from experiments.toy_optimisation import opt_models as models
+from experiments.toy_optimisation.opt_dataloader import OptDataset
+from experiments.toy_optimisation.opt_flags import get_flags
+from experiments.toy_optimisation.opt_models import GradientDescent
+from experiments.toy_optimisation.opt_potential import \
+    compute_overall_potential
 from torch import optim
 from torch.utils.data import DataLoader
-from experiments.toy_optimisation.opt_dataloader import OptDataset
-from experiments.toy_optimisation.opt_models import GradientDescent
-from experiments.toy_optimisation.opt_potential import compute_overall_potential
 
-from utils import utils_logging
-from utils.utils_data import PickleGraph, to_np
-
-from experiments.toy_optimisation import opt_models as models
-from experiments.toy_optimisation.opt_flags import get_flags
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 
 def train_epoch(epoch, model, loss_function, dataloader, optimizer, schedule, FLAGS):
