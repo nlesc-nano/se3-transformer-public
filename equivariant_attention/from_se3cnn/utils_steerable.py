@@ -1,7 +1,7 @@
 import torch
 import math
 import numpy as np
-from equivariant_attention.from_se3cnn.SO3 import irr_repr, torch_default_dtype
+from equivariant_attention.from_se3cnn.SO3 import irr_repr, TorchDefaultDtype
 from equivariant_attention.from_se3cnn.cache_file import cached_dirpklgz
 from equivariant_attention.from_se3cnn.representations import SphericalHarmonics
 
@@ -40,7 +40,7 @@ def _basis_transformation_Q_J(J, order_in, order_out, version=3):  # pylint: dis
     :param order_out: order of the output representation
     :return: one part of the Q^-1 matrix of the article
     """
-    with torch_default_dtype(torch.float64):
+    with TorchDefaultDtype(torch.float64):
         def _R_tensor(a, b, c): return kron(irr_repr(order_out, a, b, c), irr_repr(order_in, a, b, c))
 
         def _sylvester_submatrix(J, a, b, c):

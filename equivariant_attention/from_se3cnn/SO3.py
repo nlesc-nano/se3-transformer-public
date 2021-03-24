@@ -7,8 +7,9 @@ Using ZYZ Euler angles parametrisation
 import torch
 import numpy as np
 
+__all__ = ["TorchDefaultDtype"]
 
-class torch_default_dtype:
+class TorchDefaultDtype:
 
     def __init__(self, dtype):
         self.saved_dtype = None
@@ -148,7 +149,7 @@ def xyz_vector_basis_to_spherical_basis():
     into a vector transforming with irr_repr(1, a, b, c)
     see assert for usage
     """
-    with torch_default_dtype(torch.float64):
+    with TorchDefaultDtype(torch.float64):
         A = torch.tensor([[0, 1, 0], [0, 0, 1], [1, 0, 0]],
                          dtype=torch.float64)
         assert all(torch.allclose(irr_repr(1, a, b, c) @ A, A @ rot(a, b, c))
@@ -171,7 +172,7 @@ def tensor3x3_repr_basis_to_spherical_basis():
     into its 1 + 3 + 5 component transforming with irr_repr(0, a, b, c), irr_repr(1, a, b, c), irr_repr(3, a, b, c)
     see assert for usage
     """
-    with torch_default_dtype(torch.float64):
+    with TorchDefaultDtype(torch.float64):
         to1 = torch.tensor([
             [1, 0, 0, 0, 1, 0, 0, 0, 1],
         ], dtype=torch.get_default_dtype())
@@ -208,7 +209,7 @@ def test_is_representation(rep):
     """
     rep(Z(a1) Y(b1) Z(c1) Z(a2) Y(b2) Z(c2)) = rep(Z(a1) Y(b1) Z(c1)) rep(Z(a2) Y(b2) Z(c2))
     """
-    with torch_default_dtype(torch.float64):
+    with TorchDefaultDtype(torch.float64):
         a1, b1, c1, a2, b2, c2 = torch.rand(6)
 
         r1 = rep(a1, b1, c1)
@@ -235,7 +236,7 @@ def _test_spherical_harmonics(order):
     Y(Z(alpha) Y(beta) Z(gamma) x) = D(alpha, beta, gamma) Y(x)
     with x = Z(a) Y(b) eta
     """
-    with torch_default_dtype(torch.float64):
+    with TorchDefaultDtype(torch.float64):
         a, b = torch.rand(2)
         alpha, beta, gamma = torch.rand(3)
 
@@ -254,7 +255,7 @@ def _test_change_basis_wigner_to_rot():
     # from from_lielearn_SO3.wigner_d import wigner_D_matrix
     from lie_learn.representations.SO3.wigner_d import wigner_D_matrix
 
-    with torch_default_dtype(torch.float64):
+    with TorchDefaultDtype(torch.float64):
         A = torch.tensor([
             [0, 1, 0],
             [0, 0, 1],

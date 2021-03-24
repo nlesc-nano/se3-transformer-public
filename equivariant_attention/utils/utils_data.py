@@ -3,7 +3,6 @@ import warnings
 import dgl
 import torch
 
-
 def to_np(x):
     return x.cpu().detach().numpy()
 
