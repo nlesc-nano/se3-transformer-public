@@ -9,6 +9,7 @@ import numpy as np
 
 __all__ = ["TorchDefaultDtype"]
 
+
 class TorchDefaultDtype:
 
     def __init__(self, dtype):
